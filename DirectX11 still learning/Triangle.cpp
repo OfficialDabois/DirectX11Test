@@ -2,8 +2,8 @@
 
 Triangle::Triangle(ID3D11Device* dev, ID3D11DeviceContext* devcon) {
 		ID3D10Blob* VS, * PS;
-		D3DX11CompileFromFile(L"shaders.shader", 0, 0, "VS", "vs_5_0", 0, 0, 0, &VS, 0, 0);
-		D3DX11CompileFromFile(L"shaders.shader", 0, 0, "PS", "ps_5_0", 0, 0, 0, &PS, 0, 0);
+		D3DX11CompileFromFile(L"shaders.hlsl", 0, 0, "VS", "vs_5_0", 0, 0, 0, &VS, 0, 0);
+		D3DX11CompileFromFile(L"shaders.hlsl", 0, 0, "PS", "ps_5_0", 0, 0, 0, &PS, 0, 0);
 
 		dev->CreateVertexShader(VS->GetBufferPointer(), VS->GetBufferSize(), NULL, &vertexShader);
 		dev->CreatePixelShader(PS->GetBufferPointer(), PS->GetBufferSize(), NULL, &pixelShader);

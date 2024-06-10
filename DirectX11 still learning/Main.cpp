@@ -97,8 +97,6 @@ int WINAPI WinMain(HINSTANCE hInstance,
 			DispatchMessage(&msg);
 		}
 		else {
-
-
 			UpdateScene();
 			RenderFrame();
 		}
@@ -204,11 +202,11 @@ void SetScene(void) {
 
 	camera = std::unique_ptr<Camera>(new Camera(position, target, up));
 
-	squ = std::unique_ptr<Square>(new Square(dev, devcon, camera->GetView(), XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f)));
+	squ = std::unique_ptr<Square>(new Square(dev, devcon, camera->GetView(), XMVectorSet(0.5f, 0.5f, 0.0f, 0.0f)));
 }
 
 void UpdateScene(void) {
-	
+	squ->Update(camera->GetView());
 }
 
 void RenderFrame(void) {

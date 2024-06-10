@@ -24,8 +24,11 @@ public:
 	Square(ID3D11Device* dev, ID3D11DeviceContext* devcon, XMMATRIX view, XMVECTOR position);
 	~Square();
 
+	void Update(XMMATRIX view);
 	void Render(ID3D11DeviceContext* devcon);
 private:
+	ID3D11DeviceContext* devcon;
+
 	ID3D11Buffer* vertexBuffer;
 	ID3D11Buffer* indexBuffer;
 	ID3D11Buffer* cbPerObjBuffer;
@@ -48,6 +51,9 @@ private:
 	};
 
 	cbPerObj cbPerObject;
+
+	XMMATRIX proj;
+	XMMATRIX world = XMMatrixIdentity();
 };
 
 #endif

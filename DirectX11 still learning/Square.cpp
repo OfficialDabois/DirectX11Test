@@ -1,6 +1,6 @@
 #include "Square.h"
 
-Square::Square(ID3D11Device* dev, ID3D11DeviceContext* devcon, XMMATRIX view, XMVECTOR position) {
+Square::Square(ID3D11Device* dev, ID3D11DeviceContext* devcon, XMMATRIX view, XMVECTOR position): devcon(devcon) {
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
 
@@ -25,8 +25,8 @@ Square::Square(ID3D11Device* dev, ID3D11DeviceContext* devcon, XMMATRIX view, XM
 	dev->CreateBuffer(&bd, &iInit, &indexBuffer);
 
 	ID3D10Blob* VS, * PS;
-	D3DX11CompileFromFile(L"shaders.shader", 0, 0, "VS", "vs_5_0", 0, 0, 0, &VS, 0, 0);
-	D3DX11CompileFromFile(L"shaders.shader", 0, 0, "PS", "ps_5_0", 0, 0, 0, &PS, 0, 0);
+	D3DX11CompileFromFile(L"shaders.hlsl", 0, 0, "VS", "vs_5_0", 0, 0, 0, &VS, 0, 0);
+	D3DX11CompileFromFile(L"shaders.hlsl", 0, 0, "PS", "ps_5_0", 0, 0, 0, &PS, 0, 0);
 
 	dev->CreateVertexShader(VS->GetBufferPointer(), VS->GetBufferSize(), 0, &vertexShader);
 	dev->CreatePixelShader(PS->GetBufferPointer(), PS->GetBufferSize(), 0, &pixelShader);
@@ -47,9 +47,15 @@ Square::Square(ID3D11Device* dev, ID3D11DeviceContext* devcon, XMMATRIX view, XM
 
 	dev->CreateBuffer(&cbd, NULL, &cbPerObjBuffer);
 	
-	XMMATRIX world = XMMatrixIdentity();
-	XMMATRIX proj = XMMatrixPerspectiveFovLH(0.4f * 3.14f, (float)800 / (float)600, 0.1f, 1000.0f);
+	world = XMMatrixIdentity() * XMMatrixTranslation(XMVectorGetX(position), XMVectorGetY(position), XMVectorGetZ(position));
+	proj = XMMatrixPerspectiveFovLH(0.4f * 3.14f, (float)800 / (float)600, 0.1f, 1000.0f);
 
+	cbPerObject.WVP = XMMatrixTranspose(world * view * proj);
+
+	devcon->UpdateSubresource(cbPerObjBuffer, 0, NULL, &cbPerObject, 0, 0);
+}
+
+void Square::Update(XMMATRIX view) {
 	cbPerObject.WVP = XMMatrixTranspose(world * view * proj);
 
 	devcon->UpdateSubresource(cbPerObjBuffer, 0, NULL, &cbPerObject, 0, 0);

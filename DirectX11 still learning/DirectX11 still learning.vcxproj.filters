@@ -64,7 +64,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders.shader">
+    <None Include="shaders.hlsl">
       <Filter>Resource Files\Objects</Filter>
     </None>
   </ItemGroup>
