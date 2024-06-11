@@ -12,20 +12,22 @@
 #pragma comment(lib, "D3DX10.lib")
 
 #include "Types.h"
+#include "IObject.h" 
 
 struct cbPerObj {
 	XMMATRIX WVP;
 };
 
-class Square
-{
+class Square : public IObject {
 public:
-	Square() {};
 	Square(ID3D11Device* dev, ID3D11DeviceContext* devcon, XMMATRIX view, XMVECTOR position);
+	Square(Square& squ);
+	Square &operator=(const Square& squ);
 	~Square();
 
 	void Update(XMMATRIX view);
-	void Render(ID3D11DeviceContext* devcon);
+	void Move(XMVECTOR position);
+	void Render ();
 private:
 	ID3D11DeviceContext* devcon;
 
@@ -52,8 +54,9 @@ private:
 
 	cbPerObj cbPerObject;
 
-	XMMATRIX proj;
 	XMMATRIX world = XMMatrixIdentity();
+	XMMATRIX view;
+	XMMATRIX proj;
 };
 
 #endif

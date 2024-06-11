@@ -3,7 +3,7 @@
 
 class IObject {
 public:
-
+	virtual void Render() = 0;
 };
 
 #endif

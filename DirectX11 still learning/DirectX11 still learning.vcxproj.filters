@@ -42,6 +42,9 @@
     <ClCompile Include="Cube.cpp">
       <Filter>Resource Files\Objects\Cube</Filter>
     </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Types.h">
@@ -61,6 +64,9 @@
     </ClInclude>
     <ClInclude Include="IObject.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

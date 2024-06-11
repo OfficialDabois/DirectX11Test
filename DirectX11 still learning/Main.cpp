@@ -38,8 +38,7 @@ ID3D11DepthStencilView* depthStencilView;
 ID3D11Texture2D* depthBuffer;
 
 std::unique_ptr<Camera> camera;
-
-std::unique_ptr<Square> squ;
+Square* square1;
 
 float timer = 0.001;
 
@@ -202,11 +201,11 @@ void SetScene(void) {
 
 	camera = std::unique_ptr<Camera>(new Camera(position, target, up));
 
-	squ = std::unique_ptr<Square>(new Square(dev, devcon, camera->GetView(), XMVectorSet(0.5f, 0.5f, 0.0f, 0.0f)));
+	square1 = new Square(dev, devcon, camera->GetView(), XMVectorSet(0.5f, 0.5f, 0.0f, 0.0f));
 }
 
 void UpdateScene(void) {
-	squ->Update(camera->GetView());
+
 }
 
 void RenderFrame(void) {
@@ -214,21 +213,19 @@ void RenderFrame(void) {
 	devcon->ClearRenderTargetView(renderTargetView, colour);
 	devcon->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-	squ->Render(devcon);
+	square1->Render();
 
 	swapChain->Present(0, 0);
 }
 
 void CleanD3D(void) {
+	delete square1;
 	swapChain->Release();
-
 	depthBuffer->Release();
 	depthStencilView->Release();
-
 	dev->Release();
 	devcon->Release();
 	renderTargetView->Release();
-
 	pAdapter->Release();
 	pFactory->Release();
 }

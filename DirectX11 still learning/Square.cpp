@@ -1,6 +1,6 @@
 #include "Square.h"
 
-Square::Square(ID3D11Device* dev, ID3D11DeviceContext* devcon, XMMATRIX view, XMVECTOR position): devcon(devcon) {
+Square::Square(ID3D11Device* dev, ID3D11DeviceContext* devcon, XMMATRIX view, XMVECTOR position): devcon(devcon), view(view) {
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
 
@@ -55,13 +55,33 @@ Square::Square(ID3D11Device* dev, ID3D11DeviceContext* devcon, XMMATRIX view, XM
 	devcon->UpdateSubresource(cbPerObjBuffer, 0, NULL, &cbPerObject, 0, 0);
 }
 
+Square::Square(Square& squ) {
+	vertexBuffer = squ.vertexBuffer;
+	indexBuffer = squ.indexBuffer;
+	cbPerObjBuffer = squ.cbPerObjBuffer;
+	cbPerObject = squ.cbPerObject;
+	inputLayout = squ.inputLayout;
+	world = squ.world;
+	view = squ.view;
+	proj = squ.proj;
+}
+
+Square& Square::operator=(const Square& squ) {
+	return *this;
+}
+
 void Square::Update(XMMATRIX view) {
+	this->view = view;
 	cbPerObject.WVP = XMMatrixTranspose(world * view * proj);
 
 	devcon->UpdateSubresource(cbPerObjBuffer, 0, NULL, &cbPerObject, 0, 0);
 }
 
-void Square::Render(ID3D11DeviceContext* devcon) {
+void Square::Move(XMVECTOR position) {
+	world = XMMatrixIdentity() * XMMatrixTranslation(XMVectorGetX(position), XMVectorGetY(position), XMVectorGetZ(position));
+}
+
+void Square::Render() {
 	devcon->VSSetShader(vertexShader, 0, 0);
 	devcon->PSSetShader(pixelShader, 0, 0);
 
