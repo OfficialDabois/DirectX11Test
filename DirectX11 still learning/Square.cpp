@@ -55,7 +55,9 @@ Square::Square(ID3D11Device* dev, ID3D11DeviceContext* devcon, XMMATRIX view, XM
 	devcon->UpdateSubresource(cbPerObjBuffer, 0, NULL, &cbPerObject, 0, 0);
 }
 
-Square::Square(Square& squ) {
+Square::Square(Square& squ): devcon(squ.devcon) {
+	vertexShader = squ.vertexShader;
+	pixelShader = squ.pixelShader;
 	vertexBuffer = squ.vertexBuffer;
 	indexBuffer = squ.indexBuffer;
 	cbPerObjBuffer = squ.cbPerObjBuffer;
