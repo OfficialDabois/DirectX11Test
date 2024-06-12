@@ -14,6 +14,7 @@
 
 class Camera {
 public:
+	Camera() {};
 	Camera(XMVECTOR pos, XMVECTOR target, XMVECTOR up);
 
 	XMMATRIX GetView();

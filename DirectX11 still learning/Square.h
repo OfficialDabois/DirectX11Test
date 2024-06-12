@@ -27,6 +27,7 @@ public:
 
 	void Update(XMMATRIX view);
 	void Move(XMVECTOR position);
+	void Rotate(XMVECTOR axis, float angle);
 	void Render ();
 private:
 	ID3D11DeviceContext* devcon;

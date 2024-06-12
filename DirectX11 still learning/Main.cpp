@@ -14,6 +14,7 @@
 #include "Types.h"
 #include "Triangle.h"
 #include "Square.h"
+#include "Scene.h"
 
 #define width 800
 #define height 600
@@ -37,7 +38,8 @@ ID3D11RenderTargetView* renderTargetView;
 ID3D11DepthStencilView* depthStencilView;
 ID3D11Texture2D* depthBuffer;
 
-std::unique_ptr<Camera> camera;
+Scene* scene;
+Camera* camera;
 Square* square1;
 
 float timer = 0.001;
@@ -199,13 +201,16 @@ void SetScene(void) {
 	XMVECTOR target = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 
-	camera = std::unique_ptr<Camera>(new Camera(position, target, up));
+	camera = new Camera(position, target, up);
 
 	square1 = new Square(dev, devcon, camera->GetView(), XMVectorSet(0.5f, 0.5f, 0.0f, 0.0f));
+
+	scene = new Scene();
+	scene->Add(*square1);
 }
 
 void UpdateScene(void) {
-
+	square1->Rotate(XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), (3.14f)*0.25f);
 }
 
 void RenderFrame(void) {
@@ -213,13 +218,13 @@ void RenderFrame(void) {
 	devcon->ClearRenderTargetView(renderTargetView, colour);
 	devcon->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-	square1->Render();
+	scene->Render();
 
 	swapChain->Present(0, 0);
 }
 
 void CleanD3D(void) {
-	delete square1;
+	delete scene;
 	swapChain->Release();
 	depthBuffer->Release();
 	depthStencilView->Release();

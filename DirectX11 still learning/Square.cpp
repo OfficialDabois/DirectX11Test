@@ -81,6 +81,16 @@ void Square::Update(XMMATRIX view) {
 
 void Square::Move(XMVECTOR position) {
 	world = XMMatrixIdentity() * XMMatrixTranslation(XMVectorGetX(position), XMVectorGetY(position), XMVectorGetZ(position));
+	cbPerObject.WVP = XMMatrixTranspose(world * view * proj);
+
+	devcon->UpdateSubresource(cbPerObjBuffer, 0, NULL, &cbPerObject, 0, 0);
+}
+
+void Square::Rotate(XMVECTOR axis, float angle) {
+	world = XMMatrixIdentity() * XMMatrixRotationAxis(axis, angle);
+	cbPerObject.WVP = XMMatrixTranspose(world * view * proj);
+
+	devcon->UpdateSubresource(cbPerObjBuffer, 0, NULL, &cbPerObject, 0, 0);
 }
 
 void Square::Render() {

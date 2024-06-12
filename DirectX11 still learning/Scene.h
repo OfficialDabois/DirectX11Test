@@ -11,6 +11,7 @@
 
 #include "IObject.h"
 #include "Camera.h"
+#include "Square.h"
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dx11.lib")
@@ -19,10 +20,10 @@
 
 class Scene {
 public:
-	Scene(Camera* camera) {};
+	Scene() {};
 
-	void Add(IObject* object);
-	void Remove(IObject* object);
+	void Add(IObject& square);
+	void Remove(IObject& object);
 	void Render();
 private:
 	std::vector<IObject*> objects;
